@@ -19,11 +19,11 @@ public class ProductService {
     public Product addProduct(Product product) {
         if (product.getProductQuantity() < 0) throw new NotFoundException("Product quantity cannot be zero.");
 
-        return productRepository.addProduct(product);
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Integer id) {
-        productRepository.deleteProduct(id);
+        productRepository.deleteById(id);
     }
 
     public List<Product> findAll() {
@@ -37,6 +37,6 @@ public class ProductService {
 
     public Product updateProduct(Integer id, Product product) {
         product.setProductId(id);
-        return productRepository.updateProduct(product);
+        return productRepository.save(product);
     }  
 }
