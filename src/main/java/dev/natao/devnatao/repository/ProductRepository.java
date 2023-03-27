@@ -1,13 +1,13 @@
 package dev.natao.devnatao.repository;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import dev.natao.devnatao.models.entities.Product;
+import dev.natao.devnatao.models.exception.NotFoundException;
 
 @Repository
 public class ProductRepository {
@@ -63,7 +63,7 @@ public class ProductRepository {
         // Find the actual product
         Optional<Product> pr = findById(product.getProductId());
         
-        if (pr.isEmpty()) throw new InputMismatchException("Couldn't find any product.");
+        if (pr.isEmpty()) throw new NotFoundException("Couldn't find any product.");
 
         // Deleting the product
         deleteProduct(product.getProductId());

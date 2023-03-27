@@ -1,6 +1,5 @@
 package dev.natao.devnatao.services;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.natao.devnatao.models.entities.Product;
+import dev.natao.devnatao.models.exception.NotFoundException;
 import dev.natao.devnatao.repository.ProductRepository;
 
 @Service
@@ -17,8 +17,7 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public Product addProduct(Product product) {
-        if (product.getProductQuantity() < 0) 
-                throw new InputMismatchException("Product quantity cannot be zero.");
+        if (product.getProductQuantity() < 0) throw new NotFoundException("Product quantity cannot be zero.");
 
         return productRepository.addProduct(product);
     }
@@ -28,14 +27,13 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-        if (productRepository.findAll().isEmpty())
-             throw new InputMismatchException("Empty list"); 
+        if (productRepository.findAll().isEmpty()) throw new NotFoundException("Empty list"); 
 
         return productRepository.findAll();
     }
 
     public Optional<Product> findById(Integer id) {
-        if (id < 0) throw new InputMismatchException("Product id must be greater than zero.");
+        if (id < 0) throw new NotFoundException("Product id must be greater than zero.");
         return productRepository.findById(id);
     }
 
