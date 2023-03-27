@@ -27,8 +27,6 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-        if (productRepository.findAll().isEmpty()) throw new NotFoundException("Empty list"); 
-
         return productRepository.findAll();
     }
 
