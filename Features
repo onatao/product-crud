@@ -1,0 +1,11 @@
+
+models:  ok
+    product: id, name, quantity, value, observation
+
+repository: ok
+    findAll, findById, addProduct, updateProduct, deleteProduct
+
+product service:
+    findAll, findById, addProduct, updateProduct, deleteProduct
+
+product controller:
