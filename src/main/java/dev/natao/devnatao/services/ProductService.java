@@ -40,7 +40,7 @@ public class ProductService {
         // Verificar se o produto existe
         Optional<Product> product = productRepository.findById(id);
             if (product.isEmpty()) throw new NotFoundException("Product not found");
-            
+
         productRepository.deleteById(id);
     }
 
@@ -65,8 +65,16 @@ public class ProductService {
         return Optional.of(dto);
     }
 
-    public ProductDTO updateProduct(Integer id, ProductDTO product) {
-        product.setProductId(id);
-        return productRepository.save(product);
+    public ProductDTO updateProduct(Integer id, ProductDTO productDto) {
+        // Definir o ID para productDto.
+        productDto.setProductId(id);
+        // Criar um objeto de mapeamente (ModelMapper).
+        ModelMapper mapper = new ModelMapper();
+        // Converter o ProductDTO em Product (model).
+        Product productResponse = mapper.map(productDto, Product.class);
+        // Atualizar no banco de dados.
+        productRepository.save(productResponse);
+        // Retornar o productDto atualizado. 
+        return productDto;
     }  
 }
