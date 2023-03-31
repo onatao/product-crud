@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductResponse> findAll() {
+    public ResponseEntity<List<ProductResponse>> findAll() {
         List<ProductDTO> products = productService.findAll();
 
         // Converte os productDto dentro de List<ProductDTO> em uma List<ProductResponse>.
@@ -48,8 +50,8 @@ public class ProductController {
         List<ProductResponse> responseList = products.stream()
         .map(productDto -> mapper.map(productDto, ProductResponse.class))
         .collect(Collectors.toList());
-        // Retornando a lista de resposta
-        return responseList;
+        // Retornando a lista de resposta dentro de um ResponseEntity
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
