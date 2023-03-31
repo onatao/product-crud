@@ -37,6 +37,10 @@ public class ProductService {
     }
 
     public void deleteProduct(Integer id) {
+        // Verificar se o produto existe
+        Optional<Product> product = productRepository.findById(id);
+            if (product.isEmpty()) throw new NotFoundException("Product not found");
+            
         productRepository.deleteById(id);
     }
 
