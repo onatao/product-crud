@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import dev.natao.devnatao.models.entities.Product;
 import dev.natao.devnatao.models.exception.NotFoundException;
 import dev.natao.devnatao.repository.ProductRepository;
+import dev.natao.devnatao.shared.ProductDTO;
 
 @Service
 public class ProductService {
@@ -17,7 +18,8 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public Product addProduct(Product product) {
-        if (product.getProductQuantity() < 0) throw new NotFoundException("Product quantity cannot be zero.");
+        if (product.getProductQuantity() < 0)
+            throw new NotFoundException("Product quantity cannot be zero.");
 
         return productRepository.save(product);
     }
@@ -31,7 +33,8 @@ public class ProductService {
     }
 
     public Optional<Product> findById(Integer id) {
-        if (id < 0) throw new NotFoundException("Product id must be greater than zero.");
+        if (id < 0) 
+            throw new NotFoundException("Product id must be greater than zero.");
         return productRepository.findById(id);
     }
 
