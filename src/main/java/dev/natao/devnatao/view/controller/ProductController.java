@@ -85,8 +85,15 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@RequestBody Product product, @PathVariable Integer id) {
-        return productService.updateProduct(id, product);
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable Integer id) {
+        // Converte productRequeste em ProductDTO
+        ModelMapper mapper = new ModelMapper();
+        ProductDTO productDto = mapper.map(productRequest, ProductDTO.class);
+        // Salvar productDto no banco de dados
+        productDto = productService.updateProduct(id, productDto);
+        // Retorna um ResponseEntity de ProductResponse
+        ProductResponse productResponse = mapper.map(productDto, ProductResponse.class);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
     
 }
