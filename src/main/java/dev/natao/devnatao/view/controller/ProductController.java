@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.natao.devnatao.models.entities.Product;
 import dev.natao.devnatao.services.ProductService;
 import dev.natao.devnatao.shared.ProductDTO;
+import dev.natao.devnatao.view.model.ProductRequest;
 import dev.natao.devnatao.view.model.ProductResponse;
 
 @RestController
@@ -32,8 +33,14 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
+        // Converter productRequest em ProductDTO
+        ModelMapper mapper = new ModelMapper();
+        ProductDTO productDto = mapper.map(productRequest, ProductDTO.class); 
+        // Salvar o productDto no banco de dados
+        productDto = productService.addProduct(productDto);
+        // Retornar ResponseEntity de ProductResponse
+        return new ResponseEntity<>(mapper.map(productDto, ProductResponse.class), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
