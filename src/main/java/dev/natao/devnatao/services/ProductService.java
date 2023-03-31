@@ -16,15 +16,24 @@ import dev.natao.devnatao.shared.ProductDTO;
 
 @Service
 public class ProductService {
-    
+
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductDTO addProduct(ProductDTO product) {
-        if (product.getProductQuantity() < 0)
+    public ProductDTO addProduct(ProductDTO productDto) {
+        if (productDto.getProductQuantity() < 0)
             throw new NotFoundException("Product quantity cannot be zero.");
-
-        return productRepository.save(product);
+        // Removendo o ID
+        productDto.setProductId(null);
+        // Objeto de mapeamente (ModelMapper).
+        ModelMapper mapper = new ModelMapper();
+        // Converter o ProductDTO em Product (model).
+        Product productResponse = mapper.map(productDto, Product.class);
+        // Salvar productResponse no banco.
+        productResponse = productRepository.save(productResponse);
+        productDto.setProductId(productResponse.getProductId()); // Define o ID do productResponse como ID do productDTO
+        // Retornando ProductDTO com mesmo ID do productResponse
+        return productDto;
     }
 
     public void deleteProduct(Integer id) {
