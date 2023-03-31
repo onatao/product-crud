@@ -2,7 +2,10 @@ package dev.natao.devnatao.view.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.natao.devnatao.models.entities.Product;
 import dev.natao.devnatao.services.ProductService;
+import dev.natao.devnatao.shared.ProductDTO;
+import dev.natao.devnatao.view.model.ProductResponse;
 
 @RestController
 @RequestMapping("/api/product")
@@ -35,8 +40,16 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAll() {
-        return productService.findAll();
+    public List<ProductResponse> findAll() {
+        List<ProductDTO> products = productService.findAll();
+
+        // Converte os productDto dentro de List<ProductDTO> em uma List<ProductResponse>.
+        ModelMapper mapper = new ModelMapper();
+        List<ProductResponse> responseList = products.stream()
+        .map(productDto -> mapper.map(productDto, ProductResponse.class))
+        .collect(Collectors.toList());
+        // Retornando a lista de resposta
+        return responseList;
     }
 
     @GetMapping("/{id}")
