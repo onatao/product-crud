@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.print.DocFlavor.READER;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,9 +46,13 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable Integer id) {
-        productService.deleteProduct(id);
-        return "Product deleted";
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+        try {
+            productService.deleteProduct(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<T>(HttpStatus.BAD_REQUEST);
+        }   
     }
 
     @GetMapping
