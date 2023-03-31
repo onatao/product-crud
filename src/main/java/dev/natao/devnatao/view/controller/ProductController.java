@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,8 +56,19 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Product> findById(@PathVariable Integer id) {
-        return productService.findById(id);
+    public ResponseEntity<Optional<ProductResponse>> findById(@PathVariable Integer id) {
+        try {
+            
+            Optional<ProductDTO> productDto = productService.findById(id);
+            // Convertendo ProductDTO em ProductResponse
+            ModelMapper mapper = new ModelMapper();
+            ProductResponse productResponse = mapper.map(productDto.get(), ProductResponse.class);
+            // Retornando em um ResponseEntity um Optional de ProductResponse
+            return new ResponseEntity<>(Optional.of(productResponse), HttpStatus.OK);
+
+        } catch (Exception e ) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
 
     @PutMapping("/{id}")
