@@ -2,15 +2,11 @@ package dev.natao.devnatao.view.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import javax.print.DocFlavor.READER;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.natao.devnatao.models.entities.Product;
 import dev.natao.devnatao.services.ProductService;
 import dev.natao.devnatao.shared.ProductDTO;
 import dev.natao.devnatao.view.model.ProductRequest;
@@ -94,6 +89,5 @@ public class ProductController {
         // Retorna um ResponseEntity de ProductResponse
         ProductResponse productResponse = mapper.map(productDto, ProductResponse.class);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
-    }
-    
+    } 
 }
